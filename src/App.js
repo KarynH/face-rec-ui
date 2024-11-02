@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import ReactDOM from "react-dom";
 
 function App() {
   const [imageData, setImageData] = useState(null);
@@ -21,21 +20,28 @@ function App() {
     const dataUrl = canvasRef.current.toDataURL("image/jpeg");
     setImageData(dataUrl);
 
-    fetch("https://your-api-url/upload-image", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ image: dataUrl }),
-    })
+    fetch(
+      "https://ai-innovation-challenge-8fc8a252d8c5.herokuapp.com/store-face",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          student_id: "12345678",
+          face_encoding: dataUrl,
+        }),
+      }
+    )
       .then((response) => response.json())
-      .then((data) => console.log("Response:", data))
+      .then((data) => console.log("Response:", data)) //can modify image data here
       .catch((error) => console.error("Error sending image:", error));
   };
 
   return (
     <div>
-      <h1>Take a Photo</h1>
+      <h1>BMCC Student Access Point</h1>
       <video ref={videoRef} width="320" height="240" autoPlay></video>
       <button onClick={capturePhoto}>Capture Photo</button>
+      <h6>noob cyborg</h6>
       <canvas
         ref={canvasRef}
         width="320"
@@ -46,7 +52,5 @@ function App() {
     </div>
   );
 }
-
-ReactDOM.render(<App />, document.getElementById("root"));
 
 export default App;
